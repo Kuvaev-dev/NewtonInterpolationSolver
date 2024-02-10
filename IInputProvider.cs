@@ -3,6 +3,7 @@
     // Інтерфейс для введення даних
     public interface IInputProvider
     {
-        double[] GetData();
+        // Метод для отримання даних. Повертає об'єкт типу DataArrays, який містить значення x, y та інтерполяції.
+        DataArrays GetData();
     }
 }

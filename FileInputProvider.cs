@@ -1,77 +1,64 @@
-﻿using System.IO;
+﻿using System;
+using System.Globalization;
+using System.IO;
 
 namespace NewtonInterpolationSolver
 {
+    // Клас для введення даних з файлу
     public class FileInputProvider : IInputProvider
     {
+        // Шлях до файлу, з якого будуть читатися дані
         private readonly string _filePath;
 
+        // Конструктор класу, який приймає шлях до файлу
         public FileInputProvider(string filePath)
         {
             _filePath = filePath;
         }
 
-        public double[] GetData()
+        // Метод для отримання даних з файлу
+        public DataArrays GetData()
         {
             try
             {
+                // Зчитуємо усі рядки з файлу
                 string[] lines = File.ReadAllLines(_filePath);
 
-                // Отримуємо кількість точок з файлу (уявіть, що вона знаходиться в першому рядку)
-                int numberOfPoints = int.Parse(lines[0]);
-
-                // Перевіряємо, чи в файлі достатньо даних для обробки
-                if (lines.Length < numberOfPoints + 2) // +2, бо перший рядок містить кількість точок, а останній - значення для інтерполяції
+                // Перевіряємо, чи є принаймні три рядки (для значень x, y та інтерполяції)
+                if (lines.Length < 3)
                 {
-                    Console.WriteLine("\nПОМИЛКА: Недостатньо рядків у файлі для отримання даних.");
+                    TextViewer.ChangeColor($"\nПОМИЛКА: Файл '{_filePath}' не містить достатньої кількості рядків.", "red");
                     return null;
                 }
 
-                double[] xValues = new double[numberOfPoints];
-                double[] yValues = new double[numberOfPoints];
+                // Розділяємо перший та другий рядки для отримання значень x та y
+                double[] xValues = Array.ConvertAll(lines[0].Split(' '), s => double.Parse(s, CultureInfo.InvariantCulture));
+                double[] yValues = Array.ConvertAll(lines[1].Split(' '), s => double.Parse(s, CultureInfo.InvariantCulture));
 
-                for (int i = 0; i < numberOfPoints; i++)
-                {
-                    string[] values = lines[i + 1].Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    if (values.Length != 2)
-                    {
-                        Console.WriteLine("\nПОМИЛКА: Некоректний формат даних у файлі. Будь ласка, переконайтеся, що всі значення є числами та розділені пробілами.");
-                        return null;
-                    }
+                // Отримуємо значення інтерполяції з третього рядка
+                double interpolationValue = double.Parse(lines[2], CultureInfo.InvariantCulture);
 
-                    if (!double.TryParse(values[0], out xValues[i]) || !double.TryParse(values[1], out yValues[i]))
-                    {
-                        Console.WriteLine("\nПОМИЛКА: Некоректні дані у файлі.");
-                        return null;
-                    }
-                }
-
-                double interpolationValue;
-                if (!double.TryParse(lines[numberOfPoints + 1].Replace(',', '.'), out interpolationValue))
-                {
-                    Console.WriteLine("\nПОМИЛКА: Некоректне значення для інтерполяції.");
-                    return null;
-                }
-
-                return new double[] { interpolationValue }; // Повертаємо тільки значення для інтерполяції
+                // Повертаємо об'єкт DataArrays з отриманими значеннями
+                return new DataArrays { XValues = xValues, YValues = yValues, InterpolationValue = interpolationValue };
             }
             catch (FileNotFoundException)
             {
-                Console.WriteLine($"\nПОМИЛКА: Файл '{_filePath}' не знайдено. Повторіть спробу, будь-ласка.");
+                // Обробляємо виняток, якщо файл не знайдено
+                TextViewer.ChangeColor($"\nПОМИЛКА: Файл '{_filePath}' не знайдено. Повторіть спробу, будь-ласка.", "red");
                 return null;
             }
             catch (IOException)
             {
-                Console.WriteLine($"\nПОМИЛКА: Помилка читання файлу '{_filePath}'. Повторіть спробу, будь-ласка.");
+                // Обробляємо виняток, якщо сталася помилка читання файлу
+                TextViewer.ChangeColor($"\nПОМИЛКА: Помилка читання файлу '{_filePath}'. Повторіть спробу, будь-ласка.", "red");
                 return null;
             }
-            catch (FormatException)
+            catch (Exception ex)
             {
-                Console.WriteLine("\nПОМИЛКА: Некоректний формат даних у файлі. Будь ласка, переконайтеся, що всі значення є числами та розділені пробілами.");
+                // Обробляємо загальний виняток та виводимо повідомлення про помилку
+                TextViewer.ChangeColor($"\nПОМИЛКА: {ex.Message}", "red");
                 return null;
             }
         }
-
-
     }
 }

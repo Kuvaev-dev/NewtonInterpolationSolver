@@ -1,5 +1,6 @@
 ﻿namespace NewtonInterpolationSolver
 {
+    // Клас вибору кольору тексту консолі
     public class TextViewer
     {
         public static void ChangeColor(string text, string option)
