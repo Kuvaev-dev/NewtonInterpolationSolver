@@ -1,4 +1,6 @@
-﻿namespace NewtonInterpolationSolver
+﻿using NewtonInterpolationSolver.Data;
+
+namespace NewtonInterpolationSolver.Input
 {
     // Інтерфейс для введення даних
     public interface IInputProvider

@@ -1,4 +1,4 @@
-﻿namespace NewtonInterpolationSolver
+﻿namespace NewtonInterpolationSolver.View
 {
     // Клас вибору кольору тексту консолі
     public class TextViewer

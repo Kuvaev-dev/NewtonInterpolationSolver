@@ -1,5 +1,9 @@
 ﻿using System.Globalization;
 using System.Text;
+using NewtonInterpolationSolver.Data;
+using NewtonInterpolationSolver.Input;
+using NewtonInterpolationSolver.Logic;
+using NewtonInterpolationSolver.View;
 
 namespace NewtonInterpolationSolver
 {

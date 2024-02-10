@@ -1,4 +1,6 @@
-﻿namespace NewtonInterpolationSolver
+﻿using NewtonInterpolationSolver.View;
+
+namespace NewtonInterpolationSolver.Logic
 {
     // Клас для реалізації інтерполяційних методів
     public class Interpolator
@@ -59,7 +61,7 @@
                 double term = coeffs[i];
                 for (int j = 0; j < i; j++)
                 {
-                    term *= (value - x[j]);
+                    term *= value - x[j];
                     formula += $" * ({value} - {x[j]})";
                 }
                 result += term;

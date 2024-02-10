@@ -1,4 +1,4 @@
-﻿namespace NewtonInterpolationSolver
+﻿namespace NewtonInterpolationSolver.Data
 {
     // Клас, що містить два масиви типу double[] та значення інтерполяції
     public class DataArrays

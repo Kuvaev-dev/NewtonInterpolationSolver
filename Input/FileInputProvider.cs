@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
 using System.IO;
+using NewtonInterpolationSolver.Data;
+using NewtonInterpolationSolver.View;
 
-namespace NewtonInterpolationSolver
+namespace NewtonInterpolationSolver.Input
 {
     // Клас для введення даних з файлу
     public class FileInputProvider : IInputProvider
