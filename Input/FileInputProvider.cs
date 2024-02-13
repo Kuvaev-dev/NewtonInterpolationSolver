@@ -1,6 +1,4 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
+﻿using System.Globalization;
 using NewtonInterpolationSolver.Data;
 using NewtonInterpolationSolver.View;
 
@@ -23,44 +21,56 @@ namespace NewtonInterpolationSolver.Input
         {
             try
             {
-                // Зчитуємо усі рядки з файлу
+                // Спроба зчитати всі рядки з файлу
                 string[] lines = File.ReadAllLines(_filePath);
 
-                // Перевіряємо, чи є принаймні три рядки (для значень x, y та інтерполяції)
+                // Перевірка, чи є у файлі достатня кількість рядків
                 if (lines.Length < 3)
                 {
+                    // Якщо рядків недостатньо, виводиться помилка
                     TextViewer.ChangeColor($"\nПОМИЛКА: Файл '{_filePath}' не містить достатньої кількості рядків.", "red");
                     return null;
                 }
 
-                // Розділяємо перший та другий рядки для отримання значень x та y
+                // Розділення першого рядка на числа X
                 double[] xValues = Array.ConvertAll(lines[0].Split(' '), s => double.Parse(s, CultureInfo.InvariantCulture));
+
+                // Розділення другого рядка на числа Y
                 double[] yValues = Array.ConvertAll(lines[1].Split(' '), s => double.Parse(s, CultureInfo.InvariantCulture));
 
-                // Отримуємо значення інтерполяції з третього рядка
+                // Отримання значення для інтерполяції з третього рядка
                 double interpolationValue = double.Parse(lines[2], CultureInfo.InvariantCulture);
 
-                // Повертаємо об'єкт DataArrays з отриманими значеннями
+                // Перевірка, чи кількість значень X відповідає кількості значень Y
+                if (xValues.Length != yValues.Length)
+                {
+                    // Якщо кількості не відповідають, виводиться помилка
+                    TextViewer.ChangeColor("\nПОМИЛКА: Кількість значень X не відповідає кількості значень Y.", "red");
+                    return null;
+                }
+
+                // Повертаємо об'єкт DataArrays з отриманими даними
                 return new DataArrays { XValues = xValues, YValues = yValues, InterpolationValue = interpolationValue };
             }
             catch (FileNotFoundException)
             {
-                // Обробляємо виняток, якщо файл не знайдено
+                // Обробка помилки, якщо файл не знайдено
                 TextViewer.ChangeColor($"\nПОМИЛКА: Файл '{_filePath}' не знайдено. Повторіть спробу, будь-ласка.", "red");
                 return null;
             }
             catch (IOException)
             {
-                // Обробляємо виняток, якщо сталася помилка читання файлу
+                // Обробка помилки вводу-виводу
                 TextViewer.ChangeColor($"\nПОМИЛКА: Помилка читання файлу '{_filePath}'. Повторіть спробу, будь-ласка.", "red");
                 return null;
             }
             catch (Exception ex)
             {
-                // Обробляємо загальний виняток та виводимо повідомлення про помилку
+                // Обробка інших винятків
                 TextViewer.ChangeColor($"\nПОМИЛКА: {ex.Message}", "red");
                 return null;
             }
         }
+
     }
 }

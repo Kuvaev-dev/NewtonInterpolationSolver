@@ -38,25 +38,31 @@ namespace NewtonInterpolationSolver.Logic
         // Друга інтерполяційна формула Ньютона для равностоящих узлів
         public static double NewtonSecondInterpolation(double[] x, double[] y, double value)
         {
+            // Отримання кількості точок для інтерполяції
             int n = x.Length;
-            double result = 0;
-            double[] coeffs = new double[n];
-            coeffs[0] = y[0];
 
-            // Обчислення коефіцієнтів для інтерполяційного полінома
+            // Ініціалізація результату і коефіцієнтів для методу інтерполяції
+            double result = 0;
+            double[] originalY = new double[n]; // Копія вихідного масиву y
+            Array.Copy(y, originalY, n); // Створення копії вихідного масиву y
+            double[] coeffs = new double[n]; // Масив для зберігання коефіцієнтів
+
+            // Обчислення першого коефіцієнта
+            coeffs[0] = originalY[0]; // Використання копії масиву для обчислень
+
+            // Обчислення коефіцієнтів за методом Ньютона
             for (int i = 1; i < n; i++)
             {
                 for (int j = n - 1; j >= i; j--)
                 {
-                    y[j] = (y[j] - y[j - 1]) / (x[j] - x[j - i]);
+                    originalY[j] = (originalY[j] - originalY[j - 1]) / (x[j] - x[j - i]);
                 }
-                coeffs[i] = y[i];
+                coeffs[i] = originalY[i];
             }
 
+            // Обчислення значення інтерполяції
             result = coeffs[0];
             string formula = $"{coeffs[0]}";
-
-            // Обчислення інтерполяційного полінома та проміжних результатів
             for (int i = 1; i < n; i++)
             {
                 double term = coeffs[i];
@@ -67,12 +73,13 @@ namespace NewtonInterpolationSolver.Logic
                 }
                 result += term;
 
-                // Вивід проміжного результату
+                // Виведення проміжного результату для кожної ітерації
                 Console.WriteLine($"\nПроміжний результат для ітерації {i}:");
                 TextViewer.ChangeColor($"\t\n{formula} = {result}", "magenta");
             }
 
             return result;
         }
+
     }
 }
