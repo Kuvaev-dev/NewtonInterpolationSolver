@@ -28,7 +28,8 @@ namespace NewtonInterpolationSolver.Logic
                 result += term;
 
                 // Вивід проміжного результату
-                TextViewer.ChangeColor($"\nПроміжний результат для ітерації {i + 1}: {formula} = {result}", "magenta");
+                Console.WriteLine($"\nПроміжний результат для ітерації {i + 1}:");
+                TextViewer.ChangeColor($"\t\n{formula} = {result}", "magenta");
             }
 
             return result;
@@ -67,7 +68,8 @@ namespace NewtonInterpolationSolver.Logic
                 result += term;
 
                 // Вивід проміжного результату
-                TextViewer.ChangeColor($"\nПроміжний результат для ітерації {i}: {formula} = {result}", "magenta");
+                Console.WriteLine($"\nПроміжний результат для ітерації {i}:");
+                TextViewer.ChangeColor($"\t\n{formula} = {result}", "magenta");
             }
 
             return result;

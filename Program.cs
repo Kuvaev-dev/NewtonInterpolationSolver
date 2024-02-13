@@ -122,10 +122,9 @@ namespace NewtonInterpolationSolver
 
             TextViewer.ChangeColor("\nЗначення інтерполяції", "blue");
             Console.WriteLine("Введіть значення інтерполяції:");
-            double interpolationValue;
 
             // Перевірка правильності введеного значення інтерполяції
-            if (!double.TryParse(Console.ReadLine(), NumberStyles.Float, CultureInfo.InvariantCulture, out interpolationValue))
+            if (!double.TryParse(Console.ReadLine(), NumberStyles.Float, CultureInfo.InvariantCulture, out double interpolationValue))
             {
                 TextViewer.ChangeColor("\nПОМИЛКА: Некоректне значення для інтерполяції.", "red");
                 return;
@@ -160,7 +159,7 @@ namespace NewtonInterpolationSolver
                 result = Interpolator.NewtonSecondInterpolation(xValues, yValues, interpolationValue); // Виклик методу другої формули Ньютона
             }
 
-            TextViewer.ChangeColor($"\n\t\tРезультат інтерполяції: {result}", "yellow");
+            TextViewer.ChangeColor($"\nРезультат інтерполяції: {result}", "yellow");
             SaveResultsToFile(xValues, yValues, choice, result);
         }
 
