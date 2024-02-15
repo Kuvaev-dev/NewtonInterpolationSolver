@@ -33,7 +33,6 @@ namespace NewtonInterpolationSolver.Logic
                 for (int j = n - 1; j >= i; j--)
                 {
                     // Розрахунок різницевого коефіцієнта за формулою (f(x_j) - f(x_{j-1})) / (x_j - x_{j-i})
-                    double oldDiffCoeff = diffCoeff[j];
                     diffCoeff[j] = (diffCoeff[j] - diffCoeff[j - 1]) / (x[j] - x[j - i]);
                     TextViewer.ChangeColor($"\t({y[j]} - {y[j - 1]}) / ({x[j]} - {x[j - i]}) = {diffCoeff[j]}\n", "magenta");
                 }
